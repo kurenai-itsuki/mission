@@ -1,8 +1,8 @@
 <?php
-    $dsn = 'mysql:dbname=tb******db;host=localhost';
-    $user = 'tb-******';
-    $password = '*';
-    $pdo = new PDO($dsn, $user, $password, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING));
+   $dsn = 'mysql:dbname=tb*;host=localhost';
+   $user = 'tb-*';
+   $password = '*';
+   $pdo = new PDO($dsn, $user, $password, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING));;
     //テーブルの作成
 	$sql = "CREATE TABLE IF NOT EXISTS mission"
 	." ("
@@ -22,7 +22,11 @@
 	}
 	echo "<hr>";
 	*/
-    
+	
+	$edit_name = "";
+	$edit_comment = "";
+	$edit_post = "";
+	$edit_pass = "";
 	//新規投稿
 	if (!empty($_POST["name"]) && !empty($_POST["comment"]) 
     && !empty($_POST["submit"])  && !empty($_POST["pass"]) && empty($_POST["edit_post"])) {
@@ -36,8 +40,11 @@
 	    $sql = $pdo -> prepare("INSERT INTO mission (name, comment, date, pass) 
 	    VALUES (:name, :comment, :date, :pass)");
 	    $sql -> bindParam(':name', $name, PDO::PARAM_STR);
-	    $sql -> bindParam(':comment', $comment, PDO::PARAM_STR);
-	    $sql -> bindParam(':date', date("Y年m月d日 H:i:s"), PDO::PARAM_STR);
+		$sql -> bindParam(':comment', $comment, PDO::PARAM_STR);
+
+		$tmp_date = date("Y年m月d日 H:i:s");
+	    $sql -> bindParam(':date', $tmp_date, PDO::PARAM_STR);
+		//	    $sql -> bindParam(':date', date("Y年m月d日 H:i:s"), PDO::PARAM_STR);
 	    //$sql -> bindValue(':pass', $hash, PDO::PARAM_STR);
 	    $sql -> bindParam(':pass', $pass, PDO::PARAM_STR);
 	    $sql -> execute();
@@ -75,8 +82,9 @@
 	    $stmt = $pdo->prepare($sql);
 	    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 	    $stmt->bindParam(':name', $name, PDO::PARAM_STR);
-	    $stmt->bindParam(':comment', $comment, PDO::PARAM_STR);
-	    $stmt->bindParam(':date', date("Y年m月d日 H:i:s"), PDO::PARAM_STR);
+		$stmt->bindParam(':comment', $comment, PDO::PARAM_STR);
+		$tmp_date = date("Y年m月d日 H:i:s");
+	    $stmt->bindParam(':date', $tmp_date, PDO::PARAM_STR);
 	    $stmt->bindParam(':pass', $pass, PDO::PARAM_STR);
 	    $stmt->execute();
     } elseif ((!empty ($_POST["delete"])) && (!empty($_POST["delete_ad"])) && (!empty($_POST["delete_pass"])) &&
